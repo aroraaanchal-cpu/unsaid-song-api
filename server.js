@@ -13,9 +13,13 @@ app.get("/", (req, res) => {
 app.post("/generate-song", (req, res) => {
   const songData = req.body;
 
+  console.log(songData);
+
   res.json({
     status: "success",
     received: songData
+  });
+});
   });
 });
 
