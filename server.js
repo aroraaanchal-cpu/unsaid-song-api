@@ -13,13 +13,34 @@ app.get("/", (req, res) => {
 app.post("/generate-song", (req, res) => {
   const songData = req.body;
 
+  console.log("Received Song Data:");
   console.log(songData);
+
+  const prompt = `
+Create a ${songData.genre} song.
+
+Relationship:
+${songData.relationship}
+
+Beautiful Qualities:
+${songData.qualities}
+
+Special Moments:
+${songData.moments}
+
+Special Message:
+${songData.message}
+
+Language:
+${songData.language}
+
+Make the song emotional, personal and memorable.
+`;
 
   res.json({
     status: "success",
-    received: songData
-  });
-});
+    received: songData,
+    prompt
   });
 });
 
