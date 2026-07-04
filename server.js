@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
 app.post("/generate-song", (req, res) => {
   const songData = req.body;
 
-  console.log("Received Song Data:");
+  console.log("Song Data Received:");
   console.log(songData);
 
   const prompt = `
@@ -34,7 +34,7 @@ ${songData.message}
 Language:
 ${songData.language}
 
-Make the song emotional, personal and memorable.
+Make it emotional and memorable.
 `;
 
   res.json({
