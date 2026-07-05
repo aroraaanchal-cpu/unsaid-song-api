@@ -10,10 +10,10 @@ app.get("/", (req, res) => {
   res.send("Unsaid Song API Running");
 });
 
-app.post("/generate-song", (req, res) => {
+app.post("/generate-song", async (req, res) => {
   const songData = req.body;
 
-  console.log("Song Data Received:");
+  console.log("Incoming Song Data:");
   console.log(songData);
 
   const prompt = `
@@ -34,13 +34,16 @@ ${songData.message}
 Language:
 ${songData.language}
 
-Make it emotional and memorable.
+Make the song emotional and memorable.
 `;
+
+  console.log("Generated Prompt:");
+  console.log(prompt);
 
   res.json({
     status: "success",
-    received: songData,
-    prompt
+    prompt,
+    apiKeyExists: !!process.env.STABILITY_API_KEY
   });
 });
 
