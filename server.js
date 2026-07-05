@@ -17,7 +17,7 @@ app.post("/generate-song", async (req, res) => {
   console.log(songData);
 
   const prompt = `
-Create a ${songData.genre} song.
+Create a ${songData.genre} song in ${songData.language}.
 
 Relationship:
 ${songData.relationship}
@@ -31,10 +31,10 @@ ${songData.moments}
 Special Message:
 ${songData.message}
 
-Language:
-${songData.language}
+Create a heartfelt, emotional song that feels personal and memorable.
 
-Make the song emotional and memorable.
+Build a strong melody, emotional progression, and a professional musical arrangement.
+`;
 `;
 
   console.log("Generated Prompt:");
