@@ -11,12 +11,13 @@ app.get("/", (req, res) => {
 });
 
 app.post("/generate-song", async (req, res) => {
-  const songData = req.body;
+  try {
+    const songData = req.body;
 
-  console.log("Incoming Song Data:");
-  console.log(songData);
+    console.log("Incoming Song Data:");
+    console.log(songData);
 
-  const prompt = `
+    const prompt = `
 Create a ${songData.genre} song in ${songData.language}.
 
 Relationship:
@@ -35,16 +36,23 @@ Create a heartfelt, emotional song that feels personal and memorable.
 
 Build a strong melody, emotional progression, and a professional musical arrangement.
 `;
-`;
 
-  console.log("Generated Prompt:");
-  console.log(prompt);
+    console.log("Generated Prompt:");
+    console.log(prompt);
 
-  res.json({
-    status: "success",
-    prompt,
-    apiKeyExists: !!process.env.STABILITY_API_KEY
-  });
+    res.json({
+      status: "success",
+      apiKeyExists: !!process.env.STABILITY_API_KEY,
+      prompt
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      status: "error",
+      message: error.message
+    });
+  }
 });
 
 const PORT = process.env.PORT || 10000;
