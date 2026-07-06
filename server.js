@@ -42,8 +42,8 @@ Build a strong melody, emotional progression, and a professional musical arrange
 
     res.json({
       status: "success",
-      apiKeyExists: !!process.env.STABILITY_API_KEY,
-      prompt
+      prompt,
+      audioUrl: ""
     });
   } catch (error) {
     console.error(error);
