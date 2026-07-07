@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const axios = require("axios");
 
 const app = express();
 
@@ -14,10 +15,7 @@ app.post("/generate-song", async (req, res) => {
   try {
     const songData = req.body;
 
-    console.log("Incoming Song Data:");
-    console.log(songData);
-
-   const prompt = `
+    const prompt = `
 Create a ${songData.genre} song in ${songData.language}.
 
 Voice Preference:
@@ -43,17 +41,42 @@ Build a strong melody, emotional progression, and a professional musical arrange
     console.log("Generated Prompt:");
     console.log(prompt);
 
+    const stabilityResponse = await axios.post(
+      "https://api.stability.ai/v2beta/audio/stable-audio-2/text-to-audio",
+      {
+        prompt,
+        duration: 30
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.STABILITY_API_KEY}`,
+          Accept: "application/json"
+        }
+      }
+    );
+
+    console.log("Stability Response:");
+    console.log(stabilityResponse.data);
+
     res.json({
       status: "success",
       prompt,
-      audioUrl: ""
+      audioUrl: "",
+      stabilityResponse: stabilityResponse.data
     });
   } catch (error) {
-    console.error(error);
+    console.error("Stability Error:");
+
+    if (error.response) {
+      console.error(error.response.data);
+    } else {
+      console.error(error.message);
+    }
 
     res.status(500).json({
       status: "error",
-      message: error.message
+      message: error.message,
+      details: error.response?.data
     });
   }
 });
