@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
+const FormData = require("form-data");
 
 const app = express();
 
@@ -41,19 +42,22 @@ Build a strong melody, emotional progression, and a professional musical arrange
     console.log("Generated Prompt:");
     console.log(prompt);
 
-    const stabilityResponse = await axios.post(
-      "https://api.stability.ai/v2beta/audio/stable-audio-2/text-to-audio",
-      {
-        prompt,
-        duration: 30
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.STABILITY_API_KEY}`,
-          Accept: "application/json"
-        }
-      }
-    );
+  const formData = new FormData();
+
+formData.append("prompt", prompt);
+formData.append("duration", "30");
+
+const stabilityResponse = await axios.post(
+  "https://api.stability.ai/v2beta/audio/stable-audio-2/text-to-audio",
+  formData,
+  {
+    headers: {
+      Authorization: `Bearer ${process.env.STABILITY_API_KEY}`,
+      Accept: "application/json",
+      ...formData.getHeaders()
+    }
+  }
+);
 
     console.log("Stability Response:");
     console.log(stabilityResponse.data);
