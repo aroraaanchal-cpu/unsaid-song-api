@@ -17,8 +17,11 @@ app.post("/generate-song", async (req, res) => {
     console.log("Incoming Song Data:");
     console.log(songData);
 
-    const prompt = `
+   const prompt = `
 Create a ${songData.genre} song in ${songData.language}.
+
+Voice Preference:
+${songData.voice}
 
 Relationship:
 ${songData.relationship}
