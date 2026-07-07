@@ -42,22 +42,23 @@ Build a strong melody, emotional progression, and a professional musical arrange
     console.log("Generated Prompt:");
     console.log(prompt);
 
-  const formData = new FormData();
+    const formData = new FormData();
 
-formData.append("prompt", prompt);
-formData.append("duration", "30");
+    formData.append("prompt", prompt);
+    formData.append("duration", "30");
+    formData.append("model", "stable-audio-2");
 
-const stabilityResponse = await axios.post(
-  "https://api.stability.ai/v2beta/audio/stable-audio-2/text-to-audio",
-  formData,
-  {
-    headers: {
-      Authorization: `Bearer ${process.env.STABILITY_API_KEY}`,
-      Accept: "application/json",
-      ...formData.getHeaders()
-    }
-  }
-);
+    const stabilityResponse = await axios.post(
+      "https://api.stability.ai/v2beta/audio/stable-audio-2/text-to-audio",
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.STABILITY_API_KEY}`,
+          Accept: "application/json",
+          ...formData.getHeaders()
+        }
+      }
+    );
 
     console.log("Stability Response:");
     console.log(stabilityResponse.data);
@@ -73,14 +74,19 @@ const stabilityResponse = await axios.post(
 
     if (error.response) {
       console.error(error.response.data);
-    } else {
-      console.error(error.message);
+
+      return res.status(500).json({
+        status: "error",
+        message: "Stability API Error",
+        details: error.response.data
+      });
     }
 
-    res.status(500).json({
+    console.error(error.message);
+
+    return res.status(500).json({
       status: "error",
-      message: error.message,
-      details: error.response?.data
+      message: error.message
     });
   }
 });
